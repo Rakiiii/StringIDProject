@@ -51,7 +51,6 @@ public:
 	StringForCId& operator=(const StringForCId &rightString);
 
 	//перегрузка операции конкатенации
-
 	StringForCId operator+(const StringForCId &rightString)const;
 
 	//перегрузка оператора сравнения

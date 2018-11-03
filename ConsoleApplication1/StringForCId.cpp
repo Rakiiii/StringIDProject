@@ -117,3 +117,54 @@ int StringForCId::find(const char *string)const
 	//если есть возвразаем разницу в номере между первым и найденным символами
 	else return res - this->_string;
 }
+
+//перегрузка оператора присваивания
+StringForCId& StringForCId::operator=(const StringForCId &rightString)
+{
+	//если присваиваем к не нулевой строке то очищаем память и обнуляем указтель
+	if (this->_string != nullptr)
+	{
+		delete[] this->_string;
+		this->_string = nullptr;
+	}
+	//если справа 0 строка
+	if (rightString._string == nullptr)
+	{
+		//то длинна тоже 0
+		this->length = 0;
+	}
+	else
+	{
+		//если не нулевая строка, то копируем длинну
+		this->length = rightString.length;
+
+		//выделяем память и копируем строку
+		this->_string = new char[this->length];
+		strcpy(this->_string, rightString._string);
+	}
+	return *this;
+}
+
+//перегрузка операции конкатенации
+StringForCId StringForCId::operator+(const StringForCId &rightString)const
+{
+	//случай если одна их строк пустая
+	if (rightString._string == nullptr)return *this;
+	if (this->_string == nullptr)return rightString;
+
+	//создаем результируюшую строку
+	StringForCId newString;
+
+	//получаем длину новой строки
+	newString.length = this->length + rightString.length - 1;
+
+	//выделяем память строки
+	newString._string = new char[newString.length];
+
+	//складываем непосредственно строки
+	strcpy(newString._string, this->_string);
+	strcpy(newString._string + this->length, rightString._string);
+
+	//возвращаем наш объект
+	return newString;
+}
