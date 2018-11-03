@@ -19,19 +19,23 @@ String::String()
 
 String::String(const String &secondString)
 {
-	//копируемм длинну строки
-
-	this->length = secondString.length + 1;
-
-	//выделяем память в куче для нашей строки + закрывающий ноль
-	if (this->length != 0)
-		this->_string = new char[length];
-
-	//случай строка пустая
+	//если строка не нулевая
 	if (secondString._string != nullptr)
-		//копируем все символы
+	{
+		//копируем длину
+		this->length = secondString.length;
+
+		//выделяем память под строку
+		this->_string = new char[this->length];
+
+		//копируе саму строку
 		strcpy(this->_string, secondString._string);
-	else this->_string = nullptr;
+	}
+	else
+	{
+		//создаем нулевую строку
+		this->nullString();
+	}
 }
 
 

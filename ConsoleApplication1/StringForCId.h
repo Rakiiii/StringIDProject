@@ -10,9 +10,9 @@ class StringForCId : public String
 
 private:
     //метод проверки всех символов на допустимость
-	 const char* checkAllChars(const char* string);
-	 const char checkAllChars(const char string);
-	 const String checkAllChars(const String string);
+	 const char* checkAllChars(const char* string) const;
+	 const char checkAllChars(const char string) const ;
+	 const String checkAllChars(const String string)  const;
 	 
 	
 public:
@@ -42,15 +42,17 @@ public:
 	void toLower();
 
 	//поиск первого вхождения в подстроку
-
-	int find(const StringForCId &string);
+	template<typename T>
+	int find(const T &string)const;
+	int find(const char string)const;
+	int find(const char *string)const;
 
 	//перегрузка оператора присваивания
 	StringForCId& operator=(const StringForCId &rightString);
 
 	//перегрузка операции конкатенации
 
-	StringForCId operator+(const StringForCId &rightString);
+	StringForCId operator+(const StringForCId &rightString)const;
 
 	//перегрузка оператора сравнения
 	const bool operator>(const StringForCId &rightString);
@@ -58,7 +60,7 @@ public:
 
 	//перегрузка операции вычитания
 
-	StringForCId operator-(const StringForCId &rightString);
+	StringForCId operator-(const StringForCId &rightString)const;
 
 };
 

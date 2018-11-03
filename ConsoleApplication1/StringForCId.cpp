@@ -35,9 +35,11 @@ const char StringForCId::checkAllChars(const char string)
 	return string;
 }
 
-const String StringForCId::checkAllChars(const String string)
+const String StringForCId::checkAllChars(const String string)const
 {
-	return 
+	if (this->checkAllChars(((StringForCId)string)._string) == nullptr)
+		return String();
+	else return string;
 }
 
 //конструктор пустой строки
@@ -53,4 +55,65 @@ StringForCId::StringForCId(const char *string):String(this->checkAllChars(string
 {}
 
 //конструктор копированния
-StringForCId::StringForCId(const StringForCId &string):String()
+StringForCId::StringForCId(const StringForCId &string):String((String)string)
+{}
+
+//конструктор из String
+StringForCId::StringForCId(const String &string):String(this->checkAllChars(string))
+{}
+
+//диструктор
+StringForCId::~StringForCId()
+{}
+
+//перевод всей строки в верхний регистр
+void StringForCId::toUpper()
+{
+	for (int i = 0; i < this->length; i++)
+	{
+		if(this->_string[i]>='a' && this->_string[i] <= 'z')
+		this->_string[i] -= 32;
+	}
+}
+
+//перевод в нижний регистр
+void StringForCId::toLower()
+{
+	for (int i = 0; i < this->length; i++)
+	{
+		if (this->_string[i] >= 'A' && this->_string[i] <= 'Z')
+			this->_string[i] += 32;
+	}
+}
+
+//номер первого вхождения
+template<class T>
+int StringForCId::find(const T &string)const
+{
+	//ищем символ первого вхождения
+	char *res = strstr(this->_string,((StringForCId)string)._string);
+
+	//если нет таких под строк возвращаем 0
+	if (res == NULL)return NULL;
+	//если есть возвразаем разницу в номере между первым и найденным символами
+	else return res - this->_string;
+}
+int StringForCId::find(const char string)const
+{
+	char *res = strchr(this->_string, string);
+
+	//если нет таких под строк возвращаем 0
+	if (res == NULL)return NULL;
+	//если есть возвразаем разницу в номере между первым и найденным символами
+	else return res - this->_string;
+}
+
+int StringForCId::find(const char *string)const
+{
+	char *res = strstr(this->_string, string);
+
+	//если нет таких под строк возвращаем 0
+	if (res == NULL)return NULL;
+	//если есть возвразаем разницу в номере между первым и найденным символами
+	else return res - this->_string;
+}
