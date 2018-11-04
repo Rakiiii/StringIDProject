@@ -1,8 +1,12 @@
 ﻿#include "StringForCId.h"
+#include "String.h"
+#include "pch.h"
 using namespace std;
 
 
-const char* StringForCId::checkAllChars(const char* string)
+//поиск минимальнорого из 2 чисел
+
+const char* StringForCId::checkAllChars(const char* string) const
 {
 	if (strlen(string) > 31)
 	{
@@ -26,7 +30,7 @@ const char* StringForCId::checkAllChars(const char* string)
 	return string;
 }
 
-const char StringForCId::checkAllChars(const char string)
+const char StringForCId::checkAllChars(const char string) const
 {
 	if (string != '_' && (!(string >= 'a' && string <= 'z') || !(string >= 'A' && string <= 'Z')))
 	{
@@ -168,3 +172,96 @@ StringForCId StringForCId::operator+(const StringForCId &rightString)const
 	//возвращаем наш объект
 	return newString;
 }
+
+//перегрузка оператора сравнения
+const bool StringForCId::operator>(const StringForCId &rightString)const
+{
+	//если обе строки пустые то сразу возвращаем 0
+	if (this->_string == nullptr && rightString._string == nullptr)return false;
+
+	//если левая строка пустая ,а правая нет,то возарвщаем 0
+	if (this->_string == nullptr)return false;
+
+	//если правая строка пустая а левая нет,то возвращаем 1
+	if (rightString._string == nullptr)return true;
+
+	//храним минимальную длинну из 2 строк
+	int minLength = 0;
+
+	//определяем мин длинну
+	if (rightString.length > this->length) minLength = this->length;
+	else  minLength = rightString.length;
+
+	//проверяем все символы
+	for (int i = 0; i < minLength; i++)
+	{
+		//если код символа на i позиции в левой строке меньше или равен коду символа во второй строке
+		//то возрващаем 0
+		if (this->_string[i] <= rightString._string[i])return false;
+	}
+
+	//иначе возвращаем 1
+	return true;
+}
+
+const bool StringForCId::operator<(const StringForCId &rightString)const
+{
+	//если обе строки пустые то сразу возвращаем 0
+	if (this->_string == nullptr && rightString._string == nullptr)return false;
+
+	//если левая строка пустая ,а правая нет,то возарвщаем 1
+	if (this->_string == nullptr)return true;
+
+	//если правая строка пустая а левая нет,то возвращаем 0
+	if (rightString._string == nullptr)return false;
+
+	//храним минимальную длинну из 2 строк
+	int minLength = 0;
+
+	//определяем мин длинну
+	if (rightString.length > this->length) minLength = this->length;
+	else  minLength = rightString.length;
+
+	//проверяем все символы
+	for (int i = 0; i < minLength; i++)
+	{
+		//если код символа на i позиции в левой строке больше или равен коду символа во второй строке
+		//то возрващаем 0
+		if (this->_string[i] >= rightString._string[i])return false;
+	}
+	return true;
+}
+
+//метод добавления символа к строке
+void StringForCId::addChar(const char chr)
+{
+	//создаем строку из символа
+	StringForCId plusString(chr);
+
+	//складываем строки
+	*this = *this + plusString;
+}
+
+//перегрузка операции вычитания
+StringForCId StringForCId::operator-(const StringForCId &rightString)const
+{
+	//если одна из строк пустая то возвращаем левую строку
+	if (this->_string == nullptr || rightString._string == nullptr)return *this;
+
+	//создаем пустую результируюшую строку
+	StringForCId resString;
+
+	//перебираем все символы в правой строке
+	for (int i = 0; i < this->length; i++)
+	{
+		//если символа из левой строки нет в правой строке то приписываем его к результирующей
+		if (strchr(rightString._string, this->_string[i]) == NULL)resString.addChar(this->_string[i]);
+	}
+	return resString;
+}
+
+void StringForCId::printString()const
+{
+	cout << this->_string << endl;
+}
+

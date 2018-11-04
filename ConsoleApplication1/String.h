@@ -47,5 +47,6 @@ public:
 	//диструктор
 	virtual ~String();
 
-}
+
+};
 #endif 

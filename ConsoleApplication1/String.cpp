@@ -1,4 +1,5 @@
 ﻿#include "String.h"
+#include "pch.h"
 using namespace std;
 
 //обнуление строки

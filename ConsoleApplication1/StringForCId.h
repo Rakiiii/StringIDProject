@@ -4,6 +4,7 @@
 #define STRINGID_STRINGFORCID_H
 
 #include "String.h"
+#include "pch.h"
 
 class StringForCId : public String
 {
@@ -13,6 +14,9 @@ private:
 	 const char* checkAllChars(const char* string) const;
 	 const char checkAllChars(const char string) const ;
 	 const String checkAllChars(const String string)  const;
+
+	 //метод добавления символа
+	 void addChar(const char chr);
 	 
 	
 public:
@@ -52,14 +56,17 @@ public:
 
 	//перегрузка операции конкатенации
 	StringForCId operator+(const StringForCId &rightString)const;
+	
 
 	//перегрузка оператора сравнения
-	const bool operator>(const StringForCId &rightString);
-	const bool operator<(const StringForCId &rightString);
+	const bool operator>(const StringForCId &rightString)const;
+	const bool operator<(const StringForCId &rightString)const;
 
 	//перегрузка операции вычитания
-
 	StringForCId operator-(const StringForCId &rightString)const;
+
+    //вывод строки
+	void  printString()const;
 
 };
 
