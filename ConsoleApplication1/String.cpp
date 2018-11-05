@@ -53,6 +53,7 @@ String::String(const char *newString)
 
 		//копируем все символы
 		strcpy(this->_string, newString);
+
 	}
 	else
 	{
@@ -74,7 +75,7 @@ String::String(const char ch)
 
 		//заполням строку
 		this->_string[0] = ch;
-		this->_string = '\0';
+		this->_string[1] = '\0';
 	}
 	else
 	{
@@ -118,3 +119,14 @@ int String::getLength()
 		this->_string = nullptr;
 	}
 }
+
+ void String::printString()const
+ {
+	 //если строка не нулевая
+	 if (this->_string != nullptr)
+		 //выводим строку в поток вывода
+		 cout << this->_string << endl;
+	 //иначе выводим пустую строку
+	 else cout << endl;
+ }
+

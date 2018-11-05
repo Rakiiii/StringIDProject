@@ -10,16 +10,23 @@ class StringForCId : public String
 {
 
 private:
+
+	//счетчик вызова конструктора копированния
+	  static int copyConstractorCounter;
+
     //метод проверки всех символов на допустимость
-	 const char* checkAllChars(const char* string) const;
-	 const char checkAllChars(const char string) const ;
-	 const String checkAllChars(const String string)  const;
+	  const char* checkAllChars(const char* string)const;
+	  const char checkAllChars(const char string)const;
 
 	 //метод добавления символа
 	 void addChar(const char chr);
 	 
 	
 public:
+
+	//метод вывода счетчика вывода конструктора копированния
+	static void printCounter();
+
 	//конструктор пустой строки
 	StringForCId();
 
@@ -32,22 +39,18 @@ public:
 	//конструктор копированния
 	StringForCId(const StringForCId &string);
 
-	//конструктор принимающий на вход строку
-	StringForCId(const String &string);
 
 	//деструктор
 	~StringForCId();
 
 	//перевод в верхний регистр
-	void toUpper();
+	StringForCId& toUpper();
 
 	//перевод в нижний регистр
-
-	void toLower();
+	StringForCId& toLower();
 
 	//поиск первого вхождения в подстроку
-	template<typename T>
-	int find(const T &string)const;
+	int find(const StringForCId &string)const;
 	int find(const char string)const;
 	int find(const char *string)const;
 
@@ -55,7 +58,7 @@ public:
 	StringForCId& operator=(const StringForCId &rightString);
 
 	//перегрузка операции конкатенации
-	StringForCId operator+(const StringForCId &rightString)const;
+	StringForCId operator+(const StringForCId &rightString);
 	
 
 	//перегрузка оператора сравнения
@@ -65,8 +68,6 @@ public:
 	//перегрузка операции вычитания
 	StringForCId operator-(const StringForCId &rightString)const;
 
-    //вывод строки
-	void  printString()const;
 
 };
 

@@ -3,47 +3,62 @@
 #include "pch.h"
 using namespace std;
 
+//инициализируем счетчик конструктора копированния
+int StringForCId::copyConstractorCounter = 0;
 
-//поиск минимальнорого из 2 чисел
+//метод вывода счетчика конструктора окпированния
+void StringForCId::printCounter()
+{
+	cout << "Copy constractor called " << copyConstractorCounter << " times" << endl;
+}
 
+//проверям строку на допустимые символы
 const char* StringForCId::checkAllChars(const char* string) const
 {
+	//Если длина больше допустимой для с идентификатора
 	if (strlen(string) > 31)
 	{
+		//возвращаем пустую строку
 		return nullptr;
 	}
-	if (string[0] != '_' && (!(string[0] >= 'a' && string[0] <= 'z') || !(string[0] >= 'A' && string[0] <= 'Z')))
-	{
+
+	//если первый сивол не nondigit
+	if (string[0] != '_' && (!(string[0] >= 'a' && string[0] <= 'z') && !(string[0] >= 'A' && string[0] <= 'Z')))
+	{ 
+		//возвращаем пустую строку
 		return nullptr;
 	}
+
+	//проходим всю строку
 	for (int i = 1; i < strlen(string); i++)
 	{
+		//если есть технический символ языка
 		if (string[i] != '_' && 
 			!(string[i] >= 'a' && string[i] <= 'z') &&
 			!(string[i] >= 'A' && string[i] <= 'Z') && 
 			!(string[i] >= '0' && string[i] <= '9'))
 		{
+			//возвращаем нулевую строку
 			return nullptr;
 		}
 	}
 	
+	//в любом ином случае возвращаем исходную строку
 	return string;
 }
 
+//проверяем символ на допустимость
 const char StringForCId::checkAllChars(const char string) const
 {
-	if (string != '_' && (!(string >= 'a' && string <= 'z') || !(string >= 'A' && string <= 'Z')))
+	//если сивол не nondigit
+	if (string != '_' && (!(string >= 'a' && string <= 'z') && !(string >= 'A' && string <= 'Z')))
 	{
+		//возвращаем NULL
 		return NULL;
 	}
-	return string;
-}
 
-const String StringForCId::checkAllChars(const String string)const
-{
-	if (this->checkAllChars(((StringForCId)string)._string) == nullptr)
-		return String();
-	else return string;
+	//иначе возвращем символ
+	return string;
 }
 
 //конструктор пустой строки
@@ -60,66 +75,87 @@ StringForCId::StringForCId(const char *string):String(this->checkAllChars(string
 
 //конструктор копированния
 StringForCId::StringForCId(const StringForCId &string):String((String)string)
-{}
+{
+	copyConstractorCounter++;
+}
 
-//конструктор из String
-StringForCId::StringForCId(const String &string):String(this->checkAllChars(string))
-{}
 
 //диструктор
 StringForCId::~StringForCId()
 {}
 
 //перевод всей строки в верхний регистр
-void StringForCId::toUpper()
+StringForCId& StringForCId::toUpper()
 {
-	for (int i = 0; i < this->length; i++)
+	//проходим всю строку
+	for (int i = 0; i < this->length - 1; i++)
 	{
+		//если прописная буква
 		if(this->_string[i]>='a' && this->_string[i] <= 'z')
+			//переводим символ по askii в заглавный
 		this->_string[i] -= 32;
 	}
+	//возвращаем измененный объект
+	return *this;
 }
 
 //перевод в нижний регистр
-void StringForCId::toLower()
+StringForCId& StringForCId::toLower()
 {
-	for (int i = 0; i < this->length; i++)
+	//проходим всю строку 
+	for (int i = 0; i < this->length - 1; i++)
 	{
+		//если заглавная буква
 		if (this->_string[i] >= 'A' && this->_string[i] <= 'Z')
+			//переводим по askii в прописной
 			this->_string[i] += 32;
 	}
+	//возвращаем изменненый объект
+	return *this;
 }
 
 //номер первого вхождения
-template<class T>
-int StringForCId::find(const T &string)const
+int StringForCId::find(const StringForCId &string)const
 {
+	//если хоть что то пустое то возвращаем NULL
+	if (this->_string == nullptr)return -1;
+	if (string._string == nullptr)return -1;
+
 	//ищем символ первого вхождения
-	char *res = strstr(this->_string,((StringForCId)string)._string);
+	char *res = strstr(this->_string,string._string);
 
 	//если нет таких под строк возвращаем 0
-	if (res == NULL)return NULL;
+	if (res == NULL)return -1;
 	//если есть возвразаем разницу в номере между первым и найденным символами
-	else return res - this->_string;
+	else return res - this->_string + 1;
 }
 int StringForCId::find(const char string)const
 {
+	//если хоть что то пустое то возвращаем NULL
+	if (this->_string == nullptr)return -1;
+	
+	//ищем символ первого вхождения
 	char *res = strchr(this->_string, string);
 
 	//если нет таких под строк возвращаем 0
-	if (res == NULL)return NULL;
+	if (res == NULL)return -1;
 	//если есть возвразаем разницу в номере между первым и найденным символами
-	else return res - this->_string;
+	else return res - this->_string + 1;
 }
 
 int StringForCId::find(const char *string)const
 {
+	//если хоть что то пустое то возвращаем NULL
+	if (this->_string == nullptr)return -1;
+	if (string == nullptr)return -1;
+
+	//ищем символ первого вхождения
 	char *res = strstr(this->_string, string);
 
 	//если нет таких под строк возвращаем 0
-	if (res == NULL)return NULL;
+	if (res == NULL)return -1;
 	//если есть возвразаем разницу в номере между первым и найденным символами
-	else return res - this->_string;
+	else return res - this->_string + 1;
 }
 
 //перегрузка оператора присваивания
@@ -150,7 +186,7 @@ StringForCId& StringForCId::operator=(const StringForCId &rightString)
 }
 
 //перегрузка операции конкатенации
-StringForCId StringForCId::operator+(const StringForCId &rightString)const
+StringForCId StringForCId::operator+(const StringForCId &rightString)
 {
 	//случай если одна их строк пустая
 	if (rightString._string == nullptr)return *this;
@@ -167,7 +203,7 @@ StringForCId StringForCId::operator+(const StringForCId &rightString)const
 
 	//складываем непосредственно строки
 	strcpy(newString._string, this->_string);
-	strcpy(newString._string + this->length, rightString._string);
+	strcpy(newString._string + this->length-1, rightString._string);
 
 	//возвращаем наш объект
 	return newString;
@@ -189,8 +225,8 @@ const bool StringForCId::operator>(const StringForCId &rightString)const
 	int minLength = 0;
 
 	//определяем мин длинну
-	if (rightString.length > this->length) minLength = this->length;
-	else  minLength = rightString.length;
+	if (rightString.length > this->length) minLength = this->length - 1;
+	else  minLength = rightString.length - 1;
 
 	//проверяем все символы
 	for (int i = 0; i < minLength; i++)
@@ -219,8 +255,8 @@ const bool StringForCId::operator<(const StringForCId &rightString)const
 	int minLength = 0;
 
 	//определяем мин длинну
-	if (rightString.length > this->length) minLength = this->length;
-	else  minLength = rightString.length;
+	if (rightString.length > this->length) minLength = this->length - 1;
+	else  minLength = rightString.length - 1;
 
 	//проверяем все символы
 	for (int i = 0; i < minLength; i++)
@@ -258,10 +294,5 @@ StringForCId StringForCId::operator-(const StringForCId &rightString)const
 		if (strchr(rightString._string, this->_string[i]) == NULL)resString.addChar(this->_string[i]);
 	}
 	return resString;
-}
-
-void StringForCId::printString()const
-{
-	cout << this->_string << endl;
 }
 
